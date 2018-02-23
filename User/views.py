@@ -101,7 +101,7 @@ def board(request, current_page=1):
 
     if current_page < 1:
         current_page = 1
-    elif current_page > last_page:
+    elif current_page > last_page and last_page != 0:
         current_page = last_page
     beginpos = page_size*(current_page-1)
     all_message = Message.objects.order_by('-createTime')[beginpos:beginpos+page_size]

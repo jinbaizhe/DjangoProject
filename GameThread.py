@@ -44,7 +44,7 @@ def updateDB():
     currentAllGame = CurrentAllGame()
     while True:
         try:
-            conn = sqlite3.connect('db.sqlite3')
+            conn = sqlite3.connect('/root/Test/db.sqlite3')
             cursor = conn.cursor()
             game_list = currentAllGame.getCurrentAllGame()
             for content, url in game_list:

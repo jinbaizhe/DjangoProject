@@ -47,6 +47,7 @@
     </div>
     {% endfor %}
     <br>
+	{% if page_list %}
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <li class="page-item">
@@ -70,6 +71,7 @@
             </li>
         </ul>
     </nav>
+	{% endif %}
 
 {% endblock %}
 {% block head %}

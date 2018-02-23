@@ -18,7 +18,7 @@ from django.urls import path, include
 from .views import *
 app_name = 'NBAStream'
 urlpatterns = [
-    path('', index, name='index'),
+    path('', index),
     path('index/', index, name='index'),
     path('gameinfo/<int:gameid>', gameInfo, name='GameInfo'),
 
