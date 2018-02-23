@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+                {% if message %}
+                    <p class="text-success">{{ message }}</p>
+                {% endif %}
+				{% if error_message %}
+                    <p class="text-danger">{{ error_message }}</p>
+                {% endif %}
+                <form method="post" action="{% url 'user:register' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">用户名</label>
+                        <input type="text" class="form-control" name="username" placeholder="请输入用户名">
+                        <!--<small class="form-text text-muted" name=""></small>-->
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">邮箱</label>
+                        <input type="text" class="form-control" name="email" placeholder="请输入邮箱">
+                        <!--<small class="form-text text-muted" name=""></small>-->
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">密码</label>
+                        <input type="password" class="form-control" name="password1" placeholder="请输入密码">
+                        <!--<small class="form-text text-muted" name=""></small>-->
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">密码</label>
+                        <input type="password" class="form-control" name="password2" placeholder="请再次输入密码">
+                        <!--<small class="form-text text-muted" name=""></small>-->
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary" type="submit" value="注册">
+                        <a href="{% url "User:login" %}" class="btn btn-primary float-right">已有账号,直接登录</a>
+                    </div>
+                </form>
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+    </div>
+{% endblock %}
+{% block head %}
+    <title>注册</title>
+{% endblock %}

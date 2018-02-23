@@ -1,0 +1,77 @@
+{% extends "main.html" %}
+{% block content %}
+    {% if error_message %}
+        <p class="text-danger">{{ error_message }}</p>
+    {% endif %}
+    {% if success_message %}
+        <p class="text-success">{{ success_message }}</p>
+    {% endif %}
+    <form action="{% url "User:board" 1 %}" method="post">
+        {% csrf_token %}
+        <textarea name="content" id="editor1" class="form-control"></textarea>
+        <script>
+            // Replace the <textarea id="editor1"> with a CKEditor
+            // instance, using default configuration.
+            CKEDITOR.replace( 'editor1' );
+        </script>
+        <br>
+        <input type="submit" value="发表" class="btn btn-primary btn-lg float-right">
+        <div class="clearfix"></div><br>
+    </form>
+    {% for item in all_message %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-2">
+                    <img class="rounded-circle mx-auto d-block" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="60" height="60">
+                    <p class="text-center">{{ item.user.username }}</p>
+                </div>
+                <div class="col-sm-10">
+                    <div class="row">
+                        {% autoescape off %}
+                            <p class="card-text">
+                                {{ item.content }}
+                            </p>
+                        {% endautoescape %}
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="text-right">
+                                {{ item.createTime|date:"Y-m-d H:i:s" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <br>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item">
+                <a class="page-link" href="{% url "User:board" current_page|add:-1 %}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            {% for i in page_list %}
+                {% if i != current_page %}
+                    <li class="page-item"><a class="page-link" href="{% url "User:board" i %}">{{ i }}</a></li>
+                {% else %}
+                    <li class="page-item active"><a class="page-link" href="{% url "User:board" i %}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            <li class="page-item">
+                <a class="page-link" href="{% url "User:board" current_page|add:1 %}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+{% endblock %}
+{% block head %}
+    <title>留言板</title>
+{% endblock %}

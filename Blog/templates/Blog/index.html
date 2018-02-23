@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>Hello, World</h2>
+    {% for post in posts %}
+        <p>{{ post.title }}</p>
+    {% endfor %}
+    <form action="/blog/posting/" method="post">
+        {% csrf_token %}
+        <p>
+            标题：<input type="text" name="title" placeholder="请输入标题">
+        </p>
+        <p>
+            内容：<textarea name="content" rows="6" placeholder="请输入内容"></textarea>
+        </p>
+        {{ form.as_p }}
+        <p>
+            <input type="submit" value="提交">
+        </p>
+    </form>
+</body>
+</html>

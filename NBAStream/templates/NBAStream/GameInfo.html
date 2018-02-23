@@ -1,0 +1,38 @@
+{% extends "main.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 style="text-align: center">{{ title }}</h1>
+            <br>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-10">
+            <!--<div class="card-header">Game Thread</div>-->
+            {% if not info %}
+                <br>
+                <h2 style="text-align: center">暂无直播信息</h2>
+                <h3 style="text-align: center">比赛前一小时左右更新直播链接</h3>
+            {% endif %}
+            {% for item in info %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">链接：</h5>
+                        {% autoescape off %}
+                            <p class="card-text">{{ item.content }}</p>
+                        {% endautoescape %}
+                    </div>
+                </div><br>
+            {% endfor %}
+            {% if not account and info%}
+                <a href="{% url 'User:login' %}" ><h3 style="text-align: center">登录后查看更多直播链接</h3></a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block head %}
+    <title>直播信息</title>
+{% endblock %}
