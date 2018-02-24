@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="nav flex-column nav-pills nav-justified" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    {% if flag == "info" or flag == "" or flag == None %}
+                        <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                    {% else %}
+                        <a class="nav-link" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="true">
+                    {% endif %}
+                        修改资料
+                    </a>
+                    {% if flag == "password" %}
+                        <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                    {% else %}
+                        <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                    {% endif %}
+                        修改密码</a>
+                    {% if flag == "comment" %}
+                        <a class="nav-link active" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                    {% else %}
+                        <a class="nav-link" id="v-pills-messages-tab" data-toggle="pill" href="#v-pills-messages" role="tab" aria-controls="v-pills-messages" aria-selected="false">
+                    {% endif %}
+                        我的评论
+                    </a>
+                    {% if flag == "message" %}
+                        <a class="nav-link active" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                    {% else %}
+                        <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">
+                    {% endif %}
+                        我的留言
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="tab-content" id="v-pills-tabContent">
+                    {% if flag == "info" or flag == "" or flag == None %}
+                        <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    {% else %}
+                        <div class="tab-pane fade show" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                    {% endif %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                {% if info_message %}
+                                    <p class="text-success">{{ info_message }}</p>
+                                {% endif %}
+                                {% if info_error_message %}
+                                    <p class="text-danger">{{ info_error_message }}</p>
+                                {% endif %}
+                                <form action="{% url "User:setting" "info" %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">用户名</label>
+                                        <input type=text class="form-control" name="username" placeholder="请输入用户名" value="{{ user.username }}" readonly>
+                                        <!--<small class="form-text text-muted" name=""></small>-->
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">用户类型</label>
+                                        <input type="text" class="form-control" name="type" readonly value="{{ user.type }}">
+                                        <!--<small class="form-text text-muted" name=""></small>-->
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">邮箱</label>
+                                        <input type="email" class="form-control" name="email" placeholder="请输入邮箱" value="{{ user.email }}">
+                                        <!--<small class="form-text text-muted" name=""></small>-->
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">注册时间</label>
+                                        <input type="date" class="form-control" name="registryTime" readonly value="{{ user.registryTime|date:"Y-m-d H:i:s" }}">
+                                        <!--<small class="form-text text-muted" name=""></small>-->
+                                    </div>
+                                    <br>
+                                    <div class="form-group text-center">
+                                        <input class="btn btn-primary btn-block" type="submit" value="保存">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% if flag == "password" %}
+                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    {% else %}
+                        <div class="tab-pane fade show" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    {% endif %}
+                        <div class="row">
+                            <div class="col-sm-6">
+                                {% if password_message %}
+                                    <p class="text-success">{{ password_message }}</p>
+                                {% endif %}
+                                {% if password_error_message %}
+                                    <p class="text-danger">{{ password_error_message }}</p>
+                                {% endif %}
+                                <form action="{% url "User:setting" "password" %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">旧密码</label>
+                                        <input type="password" class="form-control" name="password_old" placeholder="请输入密码">
+                                        <!--<small class="form-text text-muted" name=""></small>-->
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">新密码</label>
+                                        <input type="password" class="form-control" name="password1" placeholder="请输入密码">
+                                        <!--<small class="form-text text-muted" name=""></small>-->
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleFormControlInput1">再次确认密码</label>
+                                        <input type="password" class="form-control" name="password2" placeholder="请再次输入密码">
+                                        <!--<small class="form-text text-muted" name=""></small>-->
+                                    </div>
+                                    <br>
+                                    <div class="form-group text-center">
+                                        <input class="btn btn-primary btn-block" type="submit" value="保存">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% if flag == "comment" %}
+                        <div class="tab-pane fade show active" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    {% else %}
+                        <div class="tab-pane fade show" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                    {% endif %}
+                        <p>暂缺</p>
+                    </div>
+                    {% if flag == "message" %}
+                        <div class="tab-pane fade show active" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    {% else %}
+                        <div class="tab-pane fade show" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                    {% endif %}
+                    {% for item in my_all_message %}
+                        <div class="card mt-sm-3">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        {% autoescape off %}
+                                            <p class="card-text">
+                                                {{ item.content }}
+                                            </p>
+                                        {% endautoescape %}
+                                        <div class="text-right">
+                                            {{ item.createTime|date:"Y-m-d H:i:s" }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

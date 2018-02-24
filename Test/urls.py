@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import NBAStream.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include("User.urls", namespace='user')),
     path('blog/', include("Blog.urls", namespace='blog'),),
     path('nbastream/', include("NBAStream.urls", namespace='nbastream')),
-    path('', include("NBAStream.urls")),
+    path('', NBAStream.views.index),
 ]

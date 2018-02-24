@@ -29,7 +29,7 @@ def login(request):
             error_message = '用户名不存在'
         else:
             if password == user_origin.password:#验证成功
-                response = HttpResponseRedirect(reverse("User:index"))
+                response = HttpResponseRedirect("/")
                 request.session['userid'] = user_origin.id
                 if not autologin:
                     request.session.set_expiry(0)
@@ -134,3 +134,47 @@ def about(request):
 
 def get_current_message(num=5):
     return Message.objects.order_by("-createTime")[0:num-1]
+
+
+def setting(request, flag="", pagenum=1):
+    info_error_message = ""
+    info_message = ""
+    password_error_message = ""
+    password_message = ""
+    try:
+        userid = request.session["userid"]
+        user = User.objects.get(id=userid)
+        username = user.username
+    except Exception as e:
+        print(str(e))
+    if request.method == "POST":
+        if flag == "info":
+            try:
+                email = request.POST.get("email")
+                user.email = email
+                user.save()
+                info_message = "修改成功"
+            except Exception as e:
+                info_error_message = str(e)
+        elif flag == "password":
+            try:
+                password_old = request.POST.get("password_old")
+                password1 = request.POST.get("password1")
+                password2 = request.POST.get("password2")
+                if password1!=password2 :
+                    password_error_message = "两次输入的密码不一致"
+                elif password_old != user.password:
+                    password_error_message = "旧密码输入不正确"
+                else:
+                    user.password = password1
+                    user.save()
+                    password_message = "修改成功"
+            except Exception as e:
+                password_error_message = str(e)
+    my_all_message = Message.objects.filter(user_id=userid).order_by("-createTime")
+
+    context ={"flag": flag, 'pagenum': pagenum, 'username': username,
+              'user': user, 'my_all_message': my_all_message,
+              'info_message': info_message, 'info_error_message': info_error_message,
+              'password_message': password_message, 'password_error_message': password_error_message}
+    return render(request, "User/setting.html", context)
