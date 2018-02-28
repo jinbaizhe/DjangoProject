@@ -6,7 +6,7 @@
     {% if success_message %}
         <p class="text-success">{{ success_message }}</p>
     {% endif %}
-    <form action="{% url "User:board" 1 %}" method="post">
+    <form action="{% url "User:board" 1 %}" method="post" class=" mb-sm-4">
         {% csrf_token %}
         <textarea name="content" id="editor1" class="form-control"></textarea>
         <script>
@@ -14,12 +14,11 @@
             // instance, using default configuration.
             CKEDITOR.replace( 'editor1' );
         </script>
-        <br>
-        <input type="submit" value="发表" class="btn btn-primary btn-lg float-right">
-        <div class="clearfix"></div><br>
+        <input type="submit" value="发表" class="btn btn-primary btn-lg float-right mt-sm-4">
+        <div class="clearfix"></div>
     </form>
     {% for item in all_message %}
-    <div class="card mt-sm-3">
+    <div class="card mb-sm-4">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-2">
@@ -41,7 +40,6 @@
         </div>
     </div>
     {% endfor %}
-    <br>
 	{% if page_list %}
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">

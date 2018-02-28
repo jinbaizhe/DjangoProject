@@ -6,7 +6,7 @@
                 {% block content %}{% endblock %}
             </div>
             <div class="col-sm-4">
-                <div class="card">
+                <div class="card mb-sm-4">
                     <h5 class="card-header bg-dark text-white">公告</h5>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
@@ -17,31 +17,43 @@
                             </ul>
                         </div>
                 </div>
-                <br>
-                <div class="card">
+
+                <div class="card mb-sm-4">
                     <h5 class="card-header bg-dark text-white">最近访客</h5>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
                                 <p>访客</p>
                             </li>
-
                         </ul>
                     </div>
                 </div>
-                <br>
-                <div class="card">
-                    <h5 class="card-header bg-dark text-white">最新留言</h5>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                        {% autoescape off %}
-                            {% for item in recent_message %}
-                                <li class="list-group-item">{{ item.user.username }}：{{ item.content }}</li>
-                            {% endfor %}
-                            {% block board %}{% endblock %}
-                        {% endautoescape %}
-                        </ul>
-                        <br>
+
+                <div class="card mb-sm-4">
+                    <h5 class="card-header bg-dark text-white">
+                        最新留言
+                    </h5>
+                    <ul class="list-group list-group-flush">
+                    {% autoescape off %}
+                        {% for item in recent_message %}
+                            <li class="list-group-item list-group-item-action">
+                                <div class="media">
+                                    <img class="align-self-start rounded-circle d-block" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="60" height="60">
+                                    <div class="media-body ml-sm-3">
+                                        <h6>{{ item.user.username }}：</h6>
+                                        <p>{{ item.content }}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                        {% block board %}{% endblock %}
+                    {% endautoescape %}
+                        <a href="{% url "User:board-na" %}" class="list-group-item list-group-item-action">
+                            <div class="text-center">
+                                查看全部留言
+                            </div>
+                        </a>
+                    </ul>
                         {% if message_error_message %}
                             <p>{{ message_error_message }}</p>
                         {% endif %}
@@ -49,17 +61,16 @@
                             <p>{{ message_success_message }}</p>
                         {% endif %}
                         <form action="{% url "User:board" 1 %}" method="post" class="form-group">
-                            <div class="form-row">
+                            <div class="row mt-sm-3">
                                 <div class="col-sm-9">
                                     {% csrf_token %}
-                                    <input name="content" type="text" placeholder="请输入您的留言" class="form-control">
+                                    <input name="content" type="text" placeholder="请输入您的留言" class="form-control ml-sm-2">
                                 </div>
                                 <div class="col-sm-3">
-                                    <input type="submit" value="发表" class="btn btn-primary">
+                                    <input type="submit" value="发表" class="btn btn-primary mr-sm-2">
                                 </div>
                             </div>
                         </form>
-                    </div>
                 </div>
                 {% block sidebar %}{% endblock %}
             </div>
