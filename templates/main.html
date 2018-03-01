@@ -9,24 +9,36 @@
                 <div class="card mb-sm-4">
                     <h5 class="card-header bg-dark text-white">公告</h5>
                         <div class="card-body">
+                        {% if not recent_notice %}
+                            <p>暂无</p>
+                        {% endif %}
+                        {% for item in recent_notice %}
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
                                     <a class="link" href="#">公告</a>
                                 </li>
                                 {% block notice %}{% endblock %}
                             </ul>
+                        {% endfor %}
                         </div>
                 </div>
 
                 <div class="card mb-sm-4">
                     <h5 class="card-header bg-dark text-white">最近访客</h5>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <p>访客</p>
+                    <ul class="list-group list-group-flush">
+                        {% if not recent_visitor %}
+                            <p>暂无</p>
+                        {% endif %}
+                        {% for item in recent_visitor %}
+                            <li class="list-group-item list-group-item-action">
+                            {% if item.user %}
+                                <span><strong>{{ item.user.username }}</strong>:{{ item.visitTime|date:"Y-m-d H:i:s" }}</span>
+                            {% else %}
+                                <span><strong>{{ item.ip }}</strong>:{{ item.visitTime|date:"Y-m-d H:i:s" }}</span>
+                            {% endif %}
                             </li>
-                        </ul>
-                    </div>
+                        {% endfor %}
+                    </ul>
                 </div>
 
                 <div class="card mb-sm-4">
@@ -35,12 +47,15 @@
                     </h5>
                     <ul class="list-group list-group-flush">
                     {% autoescape off %}
+                        {% if not recent_message %}
+                            <p>暂无</p>
+                        {% endif %}
                         {% for item in recent_message %}
                             <li class="list-group-item list-group-item-action">
                                 <div class="media">
                                     <img class="align-self-start rounded-circle d-block" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="60" height="60">
                                     <div class="media-body ml-sm-3">
-                                        <h6>{{ item.user.username }}：</h6>
+                                        <strong>{{ item.user.username }}：</strong>
                                         <p>{{ item.content }}</p>
                                     </div>
                                 </div>

@@ -13,13 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path, include
 import NBAStream.views
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('user/', include("User.urls", namespace='user')),
-    path('blog/', include("Blog.urls", namespace='blog'),),
-    path('nbastream/', include("NBAStream.urls", namespace='nbastream')),
     path('', NBAStream.views.index),
+    path('user/', include("User.urls", namespace='user')),
+    path('nbastream/', include("NBAStream.urls", namespace='nbastream')),
+    path('admin/', include("Admin.urls", namespace='admin')),
+    path('blog/', include("Blog.urls", namespace='blog'),),
+
 ]

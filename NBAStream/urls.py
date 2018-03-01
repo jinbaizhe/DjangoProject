@@ -20,5 +20,4 @@ app_name = 'NBAStream'
 urlpatterns = [
     path('index/', index, name='index'),
     path('gameinfo/<int:gameid>', gameInfo, name='GameInfo'),
-    path('test/', Test)
 ]

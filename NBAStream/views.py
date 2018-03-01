@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from .models import *
 from datetime import datetime
-from User.models import User, Message
-from User.views import get_current_message
+from User.models import User
+from User.views import get_current_message, get_recent_visit
 # Create your views here.
 
 
@@ -17,7 +17,8 @@ def index(request):
     info = Game.objects.filter(date=datetime.date(datetime.now())).order_by('id')
     return render(request, "NBAStream/index.html",
                   {'username': username, 'info': info,
-                   'recent_message': recent_message})
+                   'recent_message': recent_message,
+                   'recent_visitor': get_recent_visit(request)})
 
 
 def gameInfo(request, gameid):
@@ -38,8 +39,6 @@ def gameInfo(request, gameid):
     return render(request, 'NBAStream/GameInfo.html',
                   {'username': username, 'title': title,
                    'info': info, 'recent_message': recent_message,
-                   'isLogin': isLogin})
+                   'isLogin': isLogin,
+                   'recent_visitor': get_recent_visit(request)})
 
-
-def Test(request):
-    return render(request, "NBAStream/Temp2.html")

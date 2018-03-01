@@ -1,7 +1,7 @@
 from django.shortcuts import render, reverse
 from django.http import HttpResponseRedirect
 from .UserForm import *
-from datetime import datetime
+from datetime import *
 from math import ceil
 # Create your views here.
 
@@ -67,7 +67,7 @@ def register(request):
             except:
                 User.objects.create(username=username,password=password1,
                                     type=0, email=email,
-                                    registryTime=datetime.now())
+                                    registryTime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                 message = "注册成功"
     context = {'message': message, 'error_message': error_message}
     return render(request, 'User/register.html', context)
@@ -118,7 +118,8 @@ def board(request, current_page=1):
     context = {'success_message': success_message, 'error_message': error_message,
                'all_message': all_message, 'page_list': page_list,
                'current_page': current_page, 'username': username,
-               'recent_message': recent_message}
+               'recent_message': recent_message,
+               'recent_visitor': get_recent_visit(request)}
     return render(request, 'User/board.html', context)
 
 
@@ -172,9 +173,28 @@ def setting(request, flag="", pagenum=1):
             except Exception as e:
                 password_error_message = str(e)
     my_all_message = Message.objects.filter(user_id=userid).order_by("-createTime")
-
     context ={"flag": flag, 'pagenum': pagenum, 'username': username,
               'user': user, 'my_all_message': my_all_message,
               'info_message': info_message, 'info_error_message': info_error_message,
               'password_message': password_message, 'password_error_message': password_error_message}
     return render(request, "User/setting.html", context)
+
+
+def get_recent_visit(request, num=5):
+    user = None
+    try:
+        userid = request.session["userid"]
+        user = User.objects.get(id=userid)
+    except KeyError:
+        pass
+    try:
+        ip = request.META["REMOTE_ADDR"]
+        user_agent = request.META["HTTP_USER_AGENT"]
+        currentTime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        last_visit = Vistor.objects.order_by("-visitTime").filter(ip=ip, user=user, visitTime__gt=datetime.now()-timedelta(hours=1))[:1]
+        if not last_visit:
+            Vistor.objects.create(ip=ip, user_agent=user_agent, user=user,
+                                  visitTime=currentTime)
+    except KeyError:
+        pass
+    return Vistor.objects.order_by("-visitTime")[:num]
