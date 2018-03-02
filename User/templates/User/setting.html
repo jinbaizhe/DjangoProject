@@ -128,10 +128,10 @@
                     {% else %}
                         <div class="tab-pane fade show" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                     {% endif %}
-                    {% if not my_all_message %}
+                    {% if not show_my_message %}
                         <p>未曾留言</p>
                     {% endif %}
-                    {% for item in my_all_message %}
+                    {% for item in show_my_message %}
                         <div class="card  mb-sm-4">
                             <div class="card-body">
                                 <div class="row">
@@ -149,6 +149,39 @@
                             </div>
                         </div>
                     {% endfor %}
+
+                    {% if page_list %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-center">
+                            {% if current_page != 1 %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{% url "User:setting" "message" %}page-{{ previous_page }}/" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                            {% endif %}
+                                {% for i in page_list %}
+                                    {% if i != current_page %}
+                                        <li class="page-item">
+                                    {% else %}
+                                        <li class="page-item active">
+                                    {% endif %}
+                                            <a class="page-link" href="{% url "User:setting" "message" %}page-{{ i }}/">{{ i }}</a>
+                                        </li>
+                                {% endfor %}
+                                {% if current_page != last_page %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{% url "User:setting" "message" %}page-{{ next_page }}/" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from .UserForm import *
 from datetime import *
 from math import ceil
+from util.Pagination import *
 # Create your views here.
 
 
@@ -81,8 +82,6 @@ def board(request, current_page=1):
     except:
         userid = ""
         username = ""
-    page_size = 5
-    page_show_num = 2
     error_message = ""
     success_message = ""
     if request.POST:
@@ -96,29 +95,15 @@ def board(request, current_page=1):
             else:
                 error_message = "内容不能为空"
 
-    message_num = Message.objects.count()
-    last_page = ceil(message_num / page_size)
-
-    if current_page < 1:
-        current_page = 1
-    elif current_page > last_page and last_page != 0:
-        current_page = last_page
-    beginpos = page_size*(current_page-1)
-    all_message = Message.objects.order_by('-createTime')[beginpos:beginpos+page_size]
-    begin_show_page = 1
-    end_show_page = last_page
-    if current_page != 1 and current_page - page_show_num > 1:
-        begin_show_page = current_page - page_show_num
-    if current_page != last_page and current_page + page_show_num < last_page:
-        end_show_page = current_page + page_show_num
-
-    page_list = [x for x in range(begin_show_page, end_show_page + 1)]
+    all_message = Message.objects.order_by('-createTime')
+    show_message, page_list, current_page, previous_page, next_page, last_page = paginate(all_message, current_page, 5)
 
     recent_message = get_current_message()
     context = {'success_message': success_message, 'error_message': error_message,
-               'all_message': all_message, 'page_list': page_list,
+               'show_message': show_message, 'page_list': page_list,
                'current_page': current_page, 'username': username,
-               'recent_message': recent_message,
+               'next_page': next_page, 'previous_page': previous_page,
+               'last_page': last_page, 'recent_message': recent_message,
                'recent_visitor': get_recent_visit(request)}
     return render(request, 'User/board.html', context)
 
@@ -137,7 +122,7 @@ def get_current_message(num=5):
     return Message.objects.order_by("-createTime")[0:num-1]
 
 
-def setting(request, flag="", pagenum=1):
+def setting(request, flag="", current_page=1):
     info_error_message = ""
     info_message = ""
     password_error_message = ""
@@ -173,10 +158,13 @@ def setting(request, flag="", pagenum=1):
             except Exception as e:
                 password_error_message = str(e)
     my_all_message = Message.objects.filter(user_id=userid).order_by("-createTime")
-    context ={"flag": flag, 'pagenum': pagenum, 'username': username,
-              'user': user, 'my_all_message': my_all_message,
-              'info_message': info_message, 'info_error_message': info_error_message,
-              'password_message': password_message, 'password_error_message': password_error_message}
+    show_my_message, page_list, current_page, previous_page, next_page, last_page = paginate(my_all_message, current_page, 3)
+    context = {"flag": flag, 'username': username, 'show_my_message': show_my_message,
+               'user': user, 'page_list': page_list,
+               'current_page': current_page, 'next_page': next_page,
+               'previous_page': previous_page, 'last_page': last_page,
+               'info_message': info_message, 'info_error_message': info_error_message,
+               'password_message': password_message, 'password_error_message': password_error_message}
     return render(request, "User/setting.html", context)
 
 

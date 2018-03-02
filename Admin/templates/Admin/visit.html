@@ -1,0 +1,75 @@
+{% extends "Admin/base.html" %}
+{% block content %}
+    <div class="container">
+            <!-- Breadcrumbs-->
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a href="{% url "Admin:index" %}">后台管理系统</a>
+                </li>
+                <li class="breadcrumb-item active">查看最近访客</li>
+            </ol>
+            <div class="text-center">
+                <h1>最近访客</h1>
+            </div>
+            <div class="row">
+                <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">IP地址</th>
+                        <th scope="col">用户</th>
+                        <th scope="col">访问时间</th>
+                        <th scope="col">UA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if not show_visitor %}
+                    <p>暂无访问记录</p>
+                {% endif %}
+                {% for item in show_visitor %}
+                    <tr>
+                        <th scope="row">{{ item.ip }}</th>
+                        <td>{{ item.user.username }}</td>
+                        <td>{{ item.visitTime|date:"Y-m-d H:i:s" }}</td>
+                        <td>{{ item.user_agent }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+                {% if page_list %}
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                    {% if current_page != 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{% url "Admin:visit" %}page-{{ previous_page }}/" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                        {% for i in page_list %}
+                            {% if i != current_page %}
+                                <li class="page-item">
+                            {% else %}
+                                <li class="page-item active">
+                            {% endif %}
+                                    <a class="page-link" href="{% url "Admin:visit" %}page-{{ i }}/">{{ i }}</a>
+                                </li>
+                        {% endfor %}
+                        {% if current_page != last_page %}
+                            <li class="page-item">
+                                <a class="page-link" href="{% url "Admin:visit" %}page-{{ next_page }}/" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+{% endblock %}
+
+{% block head %}
+    <title>后台管理系统</title>
+{% endblock %}
