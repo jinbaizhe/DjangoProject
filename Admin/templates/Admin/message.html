@@ -1,0 +1,78 @@
+{% extends "Admin/base.html" %}
+{% block content %}
+    <div class="container">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url "Admin:index" %}">后台管理系统</a>
+            </li>
+            <li class="breadcrumb-item active">留言板管理</li>
+        </ol>
+        {% if delete_error_message %}
+            <h3 class="text-danger text-center">{{ delete_error_message }}</h3>
+        {% endif %}
+        {% if delete_success_message %}
+            <h3 class="text-success text-center">{{ delete_success_message }}</h3>
+        {% endif %}
+        {% for item in show_message %}
+            <div class="card mt-sm-5 mb-sm-3">
+                <div class="card-header">
+                    <strong>用户：</strong>{{ item.user.username }}
+                    <span class="float-right"><strong>发表时间：</strong>{{ item.createTime|date:"Y-m-d H:i:s" }}</span>
+                </div>
+                <div class="card-body">
+                    {% if item.content|length > 84 %}
+                        {{ item.content|slice:":80"|safe }}......</p>
+                    {% else %}
+                        {{ item.content|safe }}
+                    {% endif %}
+                </div>
+                <div class="card-footer">
+                    <div class="text-right">
+
+
+                    </div>
+                    <a href="{% url "Admin:delete_message" item.id %}" class="btn btn-primary btn-sm mr-sm-4">删除</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if page_list %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                {% if current_page != 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{% url "Admin:message" %}page-{{ previous_page }}/" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                {% endif %}
+                    {% for i in page_list %}
+                        {% if i != current_page %}
+                            <li class="page-item">
+                        {% else %}
+                            <li class="page-item active">
+                        {% endif %}
+                                <a class="page-link" href="{% url "Admin:message" %}page-{{ i }}/">{{ i }}</a>
+                            </li>
+                    {% endfor %}
+                    {% if current_page != last_page %}
+                        <li class="page-item">
+                            <a class="page-link" href="{% url "Admin:message" %}page-{{ next_page }}/" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block head %}
+    <title>公告管理</title>
+    {% load staticfiles %}
+    <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
+{% endblock %}

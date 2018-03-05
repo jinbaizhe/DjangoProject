@@ -8,26 +8,23 @@
             <div class="col-sm-4">
                 <div class="card mb-sm-4">
                     <h5 class="card-header bg-dark text-white">公告</h5>
-                        <div class="card-body">
                         {% if not recent_notice %}
-                            <p>暂无</p>
+                            <p class="text-center mt-sm-3">暂无</p>
                         {% endif %}
                         {% for item in recent_notice %}
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item">
-                                    <a class="link" href="#">公告</a>
+                                <li class="list-group-item list-group-item-action">
+                                    <a class="link" href="{% url "Web:notice" %}page-{{ item.id }}/">{{ item.title }}</a>
                                 </li>
-                                {% block notice %}{% endblock %}
                             </ul>
                         {% endfor %}
-                        </div>
                 </div>
 
                 <div class="card mb-sm-4">
                     <h5 class="card-header bg-dark text-white">最近访客</h5>
                     <ul class="list-group list-group-flush">
                         {% if not recent_visitor %}
-                            <p>暂无</p>
+                            <p class="text-center mt-sm-3">暂无</p>
                         {% endif %}
                         {% for item in recent_visitor %}
                             <li class="list-group-item list-group-item-action">
@@ -48,7 +45,7 @@
                     <ul class="list-group list-group-flush">
                     {% autoescape off %}
                         {% if not recent_message %}
-                            <p>暂无</p>
+                            <p class="text-center mt-sm-3">暂无</p>
                         {% endif %}
                         {% for item in recent_message %}
                             <li class="list-group-item list-group-item-action">
@@ -63,7 +60,7 @@
                         {% endfor %}
                         {% block board %}{% endblock %}
                     {% endautoescape %}
-                        <a href="{% url "User:board-na" %}" class="list-group-item list-group-item-action">
+                        <a href="{% url "Web:board-na" %}" class="list-group-item list-group-item-action">
                             <div class="text-center">
                                 查看全部留言
                             </div>
@@ -75,7 +72,7 @@
                         {% if message_success_message %}
                             <p>{{ message_success_message }}</p>
                         {% endif %}
-                        <form action="{% url "User:board" 1 %}" method="post" class="form-group">
+                        <form action="{% url "Web:board" 1 %}" method="post" class="form-group">
                             <div class="row mt-sm-3">
                                 <div class="col-sm-9">
                                     {% csrf_token %}

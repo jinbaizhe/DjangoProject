@@ -1,0 +1,11 @@
+{% extends "main.html" %}
+{% block content %}
+    <h2 class="text-center">{{ item.title }}</h2>
+    <h4>
+        <div class="text-right">
+            <small class="text-muted mr-sm-4">发布者：{{ item.admin.username }}</small>
+            <small class="text-muted">发布时间：{{ item.createTime|date:"Y-m-d H:i:s" }}</small>
+        </div>
+    </h4>
+    <p>{{ item.content|safe }}</p>
+{% endblock %}

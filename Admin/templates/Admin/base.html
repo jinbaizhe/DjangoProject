@@ -30,10 +30,10 @@
                     </a>
                     <ul class="sidenav-second-level collapse" id="webManage">
                         <li>
-                            <a href="#">公告管理</a>
+                            <a href="{% url "Admin:notice" %}">公告管理</a>
                         </li>
                         <li>
-                            <a href="#">留言板管理</a>
+                            <a href="{% url "Admin:message" %}">留言板管理</a>
                         </li>
                         <li>
                             <a href="{% url "Admin:visit" %}">查看最近访客</a>
@@ -62,7 +62,7 @@
                     <ul class="sidenav-second-level collapse" id="userSetting">
                         <li>
                             <a href="#">修改个人信息</a>
-                            <a href="#">修改密码</a>
+                            <a href="{% url "Admin:changepassowrd" %}">修改密码</a>
                         </li>
                     </ul>
                 </li>
@@ -198,7 +198,8 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-                        <i class="fa fa-fw fa-sign-out"></i>退出</a>
+                        <i class="fa fa-fw fa-sign-out"></i>退出
+                    </a>
                 </li>
             </ul>
         </div>
@@ -233,7 +234,7 @@
                     <div class="modal-body">退出当前账号？</div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
-                        <a class="btn btn-primary" href="#">退出</a>
+                        <a class="btn btn-primary" href="{% url "Admin:logout" %}">退出</a>
                     </div>
                 </div>
             </div>

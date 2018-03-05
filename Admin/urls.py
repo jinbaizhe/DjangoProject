@@ -20,5 +20,12 @@ app_name = 'Admin'
 urlpatterns = [
     path('index/', index, name='index'),
     path('login/', login, name='login'),
-    re_path('visit/(page-(?P<current_page>\d+)/)?', visit, name='visit'),
+    path('logout/', logout, name='logout'),
+    path('changepassowrd/', changepassowrd, name='changepassowrd'),
+    re_path('^notice/(?:page-(?P<current_page>\d+)/)?', notice, name='notice'),
+    path('deletenotice/<int:noticeid>/', delete_notice, name='delete_notice'),
+    re_path('^visit/(?:page-(?P<current_page>\d+)/)?', visit, name='visit'),
+    re_path('^message/(?:page-(?P<current_page>\d+)/)?', message, name='message'),
+    path('deletemessage/<int:messageid>/', delete_message, name='delete_message'),
+
 ]

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import *
 from datetime import datetime
 from User.models import User
-from User.views import get_current_message, get_recent_visit
+from Web.views import get_current_message, get_recent_visit, get_current_notice
 # Create your views here.
 
 
@@ -18,7 +18,8 @@ def index(request):
     return render(request, "NBAStream/index.html",
                   {'username': username, 'info': info,
                    'recent_message': recent_message,
-                   'recent_visitor': get_recent_visit(request)})
+                   'recent_visitor': get_recent_visit(request),
+                   'recent_notice': get_current_notice(5)})
 
 
 def gameInfo(request, gameid):
@@ -38,7 +39,7 @@ def gameInfo(request, gameid):
         info = info[:1]
     return render(request, 'NBAStream/GameInfo.html',
                   {'username': username, 'title': title,
-                   'info': info, 'recent_message': recent_message,
-                   'isLogin': isLogin,
-                   'recent_visitor': get_recent_visit(request)})
-
+                   'info': info, 'isLogin': isLogin,
+                   'recent_message': recent_message,
+                   'recent_visitor': get_recent_visit(request),
+                   'recent_notice': get_current_notice(5)})

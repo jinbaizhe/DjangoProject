@@ -21,8 +21,5 @@ urlpatterns = [
     path('login/', login, name='login'),
     path('logout/', logout, name='logout'),
     path('register/', register, name='register'),
-    path('about/', about, name='about'),
-    path('board/', board, name='board-na'),
-    path('board/<int:current_page>/', board, name='board'),
-    re_path('setting/(?:(?P<flag>\w+)/(page-(?P<current_page>\d+)/)?)?', setting, name="setting"),
+    re_path('^setting/(?:(?P<flag>\w+)/(page-(?P<current_page>\d+)/)?)?', setting, name="setting"),
 ]

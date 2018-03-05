@@ -4,6 +4,7 @@ from .UserForm import *
 from datetime import *
 from math import ceil
 from util.Pagination import *
+from Web.models import Message
 # Create your views here.
 
 
@@ -74,54 +75,6 @@ def register(request):
     return render(request, 'User/register.html', context)
 
 
-def board(request, current_page=1):
-    try:
-        userid = request.session['userid']
-        user = User.objects.get(id=userid)
-        username = user.username
-    except:
-        userid = ""
-        username = ""
-    error_message = ""
-    success_message = ""
-    if request.POST:
-        if not username:
-            error_message = "请登录后再发表留言"
-        else:
-            content = request.POST.get("content")
-            if content:
-                Message.objects.create(user_id=userid, content=content, createTime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-                success_message = "发表成功"
-            else:
-                error_message = "内容不能为空"
-
-    all_message = Message.objects.order_by('-createTime')
-    show_message, page_list, current_page, previous_page, next_page, last_page = paginate(all_message, current_page, 5)
-
-    recent_message = get_current_message()
-    context = {'success_message': success_message, 'error_message': error_message,
-               'show_message': show_message, 'page_list': page_list,
-               'current_page': current_page, 'username': username,
-               'next_page': next_page, 'previous_page': previous_page,
-               'last_page': last_page, 'recent_message': recent_message,
-               'recent_visitor': get_recent_visit(request)}
-    return render(request, 'User/board.html', context)
-
-
-def about(request):
-    try:
-        userid = request.session['userid']
-        user = User.objects.get(id=userid)
-        username = user.username
-    except:
-        username = ""
-    return render(request, "User/about.html", {'username': username})
-
-
-def get_current_message(num=5):
-    return Message.objects.order_by("-createTime")[0:num-1]
-
-
 def setting(request, flag="", current_page=1):
     info_error_message = ""
     info_message = ""
@@ -167,22 +120,3 @@ def setting(request, flag="", current_page=1):
                'password_message': password_message, 'password_error_message': password_error_message}
     return render(request, "User/setting.html", context)
 
-
-def get_recent_visit(request, num=5):
-    user = None
-    try:
-        userid = request.session["userid"]
-        user = User.objects.get(id=userid)
-    except KeyError:
-        pass
-    try:
-        ip = request.META["REMOTE_ADDR"]
-        user_agent = request.META["HTTP_USER_AGENT"]
-        currentTime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        last_visit = Vistor.objects.order_by("-visitTime").filter(ip=ip, user=user, visitTime__gt=datetime.now()-timedelta(hours=1))[:1]
-        if not last_visit:
-            Vistor.objects.create(ip=ip, user_agent=user_agent, user=user,
-                                  visitTime=currentTime)
-    except KeyError:
-        pass
-    return Vistor.objects.order_by("-visitTime")[:num]

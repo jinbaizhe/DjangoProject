@@ -19,8 +19,8 @@
         <div class="card card-login mx-auto mt-5">
             <div class="card-header">登录</div>
             <div class="card-body">
-                {% if message %}
-                    <p class="text-success">{{ message }}</p>
+                {% if success_message %}
+                    <p class="text-success">{{ success_message }}</p>
                 {% endif %}
                 {% if error_message %}
                     <p class="text-danger">{{ error_message }}</p>

@@ -17,6 +17,7 @@ from django.urls import path, include
 import NBAStream.views
 urlpatterns = [
     path('', NBAStream.views.index),
+    path('web/', include("Web.urls", namespace='web')),
     path('user/', include("User.urls", namespace='user')),
     path('nbastream/', include("NBAStream.urls", namespace='nbastream')),
     path('admin/', include("Admin.urls", namespace='admin')),

@@ -9,15 +9,3 @@ class User(models.Model):
     email = models.EmailField(default='')
     registryTime = models.DateTimeField()
 
-
-class Message(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField(max_length=255)
-    createTime = models.DateTimeField()
-
-
-class Vistor(models.Model):
-    ip = models.TextField(max_length=15)
-    user_agent = models.TextField(max_length=100)
-    user = models.ForeignKey(User,on_delete=models.SET_NULL, default=None, null=True)
-    visitTime = models.DateTimeField()
