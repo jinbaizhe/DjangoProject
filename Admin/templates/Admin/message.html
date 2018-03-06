@@ -8,11 +8,11 @@
             </li>
             <li class="breadcrumb-item active">留言板管理</li>
         </ol>
-        {% if delete_error_message %}
-            <h3 class="text-danger text-center">{{ delete_error_message }}</h3>
+        {% if error_message %}
+            <h4 class="text-danger text-center">{{ error_message }}</h4>
         {% endif %}
-        {% if delete_success_message %}
-            <h3 class="text-success text-center">{{ delete_success_message }}</h3>
+        {% if success_message %}
+            <h4 class="text-success text-center">{{ success_message }}</h4>
         {% endif %}
         {% for item in show_message %}
             <div class="card mt-sm-5 mb-sm-3">
@@ -28,10 +28,6 @@
                     {% endif %}
                 </div>
                 <div class="card-footer">
-                    <div class="text-right">
-
-
-                    </div>
                     <a href="{% url "Admin:delete_message" item.id %}" class="btn btn-primary btn-sm mr-sm-4">删除</a>
                 </div>
             </div>
@@ -72,7 +68,7 @@
 {% endblock %}
 
 {% block head %}
-    <title>公告管理</title>
+    <title>留言板管理</title>
     {% load staticfiles %}
     <script src="{% static 'ckeditor/ckeditor.js' %}"></script>
 {% endblock %}

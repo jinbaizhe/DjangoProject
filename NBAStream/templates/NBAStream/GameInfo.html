@@ -24,7 +24,7 @@
                     </div>
                 </div>
             {% endfor %}
-            {% if not isLogin%}
+            {% if not myuser%}
                 <a href="{% url 'User:login' %}" >
                     <h3 style="text-align: center">登录后查看更多直播链接</h3>
                 </a>

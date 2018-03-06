@@ -2,7 +2,6 @@ from django.shortcuts import render, reverse
 from django.http import HttpResponseRedirect
 from .UserForm import *
 from datetime import *
-from math import ceil
 from util.Pagination import *
 from Web.models import Message
 # Create your views here.
@@ -12,10 +11,9 @@ def index(request):
     try:
         userid = request.session['userid']
         user = User.objects.get(id=userid)
-        username = user.username
     except:
-        username = ""
-    return render(request, "User/index.html", {'username': username})
+        user = None
+    return render(request, "User/index.html", {'user': user})
 
 
 def login(request):
@@ -71,7 +69,7 @@ def register(request):
                                     type=0, email=email,
                                     registryTime=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                 message = "注册成功"
-    context = {'message': message, 'error_message': error_message}
+    context = {'message': message, 'error_message': error_message, 'user':None}
     return render(request, 'User/register.html', context)
 
 
@@ -83,7 +81,6 @@ def setting(request, flag="", current_page=1):
     try:
         userid = request.session["userid"]
         user = User.objects.get(id=userid)
-        username = user.username
     except Exception as e:
         print(str(e))
     if request.method == "POST":
@@ -112,7 +109,7 @@ def setting(request, flag="", current_page=1):
                 password_error_message = str(e)
     my_all_message = Message.objects.filter(user_id=userid).order_by("-createTime")
     show_my_message, page_list, current_page, previous_page, next_page, last_page = paginate(my_all_message, current_page, 3)
-    context = {"flag": flag, 'username': username, 'show_my_message': show_my_message,
+    context = {"flag": flag, 'myuser': user, 'show_my_message': show_my_message,
                'user': user, 'page_list': page_list,
                'current_page': current_page, 'next_page': next_page,
                'previous_page': previous_page, 'last_page': last_page,

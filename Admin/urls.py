@@ -27,5 +27,8 @@ urlpatterns = [
     re_path('^visit/(?:page-(?P<current_page>\d+)/)?', visit, name='visit'),
     re_path('^message/(?:page-(?P<current_page>\d+)/)?', message, name='message'),
     path('deletemessage/<int:messageid>/', delete_message, name='delete_message'),
-
+    path('deletevisit/<int:visitorid>/', delete_visitor, name='delete_visitor'),
+    re_path('^userSetting/(?:page-(?P<current_page>\d+)/)?', userSetting, name='userSetting'),
+    path('setadmin/<int:userid>/', setAdmin, name='setAdmin'),
+    path('resetadmin/<int:userid>/', resetAdmin, name='resetAdmin'),
 ]

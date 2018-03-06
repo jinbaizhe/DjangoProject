@@ -10,6 +10,12 @@
             </ol>
             <div class="text-center">
                 <h1>最近访客</h1>
+                {% if error_message %}
+                    <h4 class="text-danger text-center">{{ error_message }}</h4>
+                {% endif %}
+                {% if success_message %}
+                    <h4 class="text-success text-center">{{ success_message }}</h4>
+                {% endif %}
             </div>
             <div class="row">
                 <table class="table table-hover">
@@ -18,12 +24,17 @@
                         <th scope="col">IP地址</th>
                         <th scope="col">用户</th>
                         <th scope="col">访问时间</th>
-                        <th scope="col">UA</th>
+                        <th scope="col">用户代理</th>
+                        <th scope="col">操作</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% if not show_visitor %}
-                    <p>暂无访问记录</p>
+                    <tr>
+                        <td colspan="6">
+                            <h4 class="text-center">暂无数据</h4>
+                        </td>
+                    </tr>
                 {% endif %}
                 {% for item in show_visitor %}
                     <tr>
@@ -31,6 +42,7 @@
                         <td>{{ item.user.username }}</td>
                         <td>{{ item.visitTime|date:"Y-m-d H:i:s" }}</td>
                         <td>{{ item.user_agent }}</td>
+                        <td><a class="btn btn-primary btn-sm" href="{% url "Admin:delete_visitor" item.id %}">删除</a> </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -71,5 +83,5 @@
 {% endblock %}
 
 {% block head %}
-    <title>后台管理系统</title>
+    <title>查看最近访客</title>
 {% endblock %}

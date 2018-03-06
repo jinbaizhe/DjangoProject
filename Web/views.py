@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from User.models import *
 from Web.models import *
 from datetime import datetime,timedelta
 from util.Pagination import *
@@ -25,14 +24,12 @@ def board(request, current_page=1):
     try:
         userid = request.session['userid']
         user = User.objects.get(id=userid)
-        username = user.username
     except:
-        userid = ""
-        username = ""
+        user = None
     error_message = ""
     success_message = ""
     if request.POST:
-        if not username:
+        if not user:
             error_message = "请登录后再发表留言"
         else:
             content = request.POST.get("content")
@@ -48,7 +45,7 @@ def board(request, current_page=1):
     recent_message = get_current_message()
     context = {'success_message': success_message, 'error_message': error_message,
                'show_message': show_message, 'page_list': page_list,
-               'current_page': current_page, 'username': username,
+               'current_page': current_page, 'myuser': user,
                'next_page': next_page, 'previous_page': previous_page,
                'last_page': last_page,
                'recent_message': recent_message,
@@ -61,10 +58,9 @@ def about(request):
     try:
         userid = request.session['userid']
         user = User.objects.get(id=userid)
-        username = user.username
     except:
-        username = ""
-    return render(request, "Web/about.html", {'username': username})
+        user = None
+    return render(request, "Web/about.html", {'myuser': user})
 
 
 def get_current_message(num=5):
@@ -72,12 +68,11 @@ def get_current_message(num=5):
 
 
 def get_recent_visit(request, num=5):
-    user = None
     try:
         userid = request.session["userid"]
         user = User.objects.get(id=userid)
     except KeyError:
-        pass
+        user = None
     try:
         ip = request.META["REMOTE_ADDR"]
         user_agent = request.META["HTTP_USER_AGENT"]

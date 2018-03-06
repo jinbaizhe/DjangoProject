@@ -39,9 +39,18 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav navbar-right">
-                    {% if username %}
+                    {% if myuser %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'User:setting' %} ">欢迎您，{{ username }}</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">欢迎您，{{ myuser.username }}</a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{% url 'User:setting' %}">个人中心</a>
+                                    {% if myuser.type == 1 %}
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{% url "Admin:index" %}">网站管理</a>
+                                    {% endif %}
+                                </div>
+                            </li>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'User:logout' %} ">退出</a>
@@ -54,19 +63,6 @@
                             <a class="nav-link" href="{% url 'User:register' %} ">注册</a>
                         </li>
                     {% endif %}
-<!--
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            个人中心
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
--->
                 </ul>
             </div>
         </nav>

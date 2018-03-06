@@ -18,7 +18,7 @@ from .views import *
 app_name = 'Web'
 urlpatterns = [
     path('about/', about, name='about'),
-    re_path('^notice/(?:page-(?P<noticeid>\d+))?', notice, name='notice'),
+    re_path('^notice/(?:page-(?P<noticeid>\d+)/)?', notice, name='notice'),
     path('board/', board, name='board-na'),
     path('board/<int:current_page>/', board, name='board'),
 ]

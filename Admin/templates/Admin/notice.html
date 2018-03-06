@@ -9,10 +9,10 @@
             <li class="breadcrumb-item active">公告管理</li>
         </ol>
         {% if error_message %}
-            <h3 class="text-danger text-center">{{ error_message }}</h3>
+            <h4 class="text-danger text-center">{{ error_message }}</h4>
         {% endif %}
         {% if success_message %}
-            <h3 class="text-success text-center">{{ success_message }}</h3>
+            <h4 class="text-success text-center">{{ success_message }}</h4>
         {% endif %}
         <form action="{% url "Admin:notice" %}" method="post" class=" mb-sm-4">
             {% csrf_token %}
@@ -33,12 +33,6 @@
             <input type="submit" value="发表" class="btn btn-primary btn-lg float-right mt-sm-4">
             <div class="clearfix"></div>
         </form>
-        {% if delete_error_message %}
-            <h3 class="text-danger text-center">{{ delete_error_message }}</h3>
-        {% endif %}
-        {% if delete_success_message %}
-            <h3 class="text-success text-center">{{ delete_success_message }}</h3>
-        {% endif %}
         {% for item in show_notice %}
             <div class="card mt-sm-5 mb-sm-3">
                 <div class="card-header">
@@ -63,8 +57,6 @@
                     <a href="#" class="btn btn-primary btn-sm mr-sm-4 float-left">修改</a>
                     <span class="float-right ml-sm-4"><strong>发表者：</strong>{{ item.admin.username }}</span>
                     <span class="float-right"><strong>发表时间：</strong>{{ item.createTime|date:"Y-m-d H:i:s" }}</span>
-
-
                 </div>
             </div>
         {% endfor %}

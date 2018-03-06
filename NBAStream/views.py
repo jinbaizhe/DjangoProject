@@ -10,36 +10,31 @@ def index(request):
     try:
         userid = request.session['userid']
         user = User.objects.get(id=userid)
-        username = user.username
     except:
-        username = ""
+        user = None
     recent_message = get_current_message()
     info = Game.objects.filter(date=datetime.date(datetime.now())).order_by('id')
     return render(request, "NBAStream/index.html",
-                  {'username': username, 'info': info,
+                  {'myuser': user, 'info': info,
                    'recent_message': recent_message,
                    'recent_visitor': get_recent_visit(request),
                    'recent_notice': get_current_notice(5)})
 
 
 def gameInfo(request, gameid):
-    isLogin = False
     try:
         userid = request.session['userid']
         user = User.objects.get(id=userid)
-        username = user.username
-        isLogin = True
     except:
-        userid = ""
-        username = ""
+        user = None
     recent_message = get_current_message()
     info = GameInfo.objects.filter(game_id=gameid, orderid__gte=1).order_by('orderid')
     title = Game.objects.get(pk=gameid).title
-    if not userid:
+    if not user:
         info = info[:1]
     return render(request, 'NBAStream/GameInfo.html',
-                  {'username': username, 'title': title,
-                   'info': info, 'isLogin': isLogin,
+                  {'myuser': user, 'title': title,
+                   'info': info,
                    'recent_message': recent_message,
                    'recent_visitor': get_recent_visit(request),
                    'recent_notice': get_current_notice(5)})
